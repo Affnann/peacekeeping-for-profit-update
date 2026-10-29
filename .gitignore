@@ -217,3 +217,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Built locally, not committed (UN terms do not allow redistribution)
+external/
+data/build/

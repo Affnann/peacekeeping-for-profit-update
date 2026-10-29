@@ -1,14 +1,15 @@
-"""Check the panel against the UN's own published annual figures and for gaps.
+"""Step 2: check the panel.
 
 Checks:
-  1. Our yearly averages (built from the monthly data) compared with the UN's separate
-     Annual Uniformed Personnel Contribution Statistics, country by country, 2010 onward.
-  2. Months reported per year (the UN notes that some months are missing).
-  3. The join between the two UN monthly datasets (Dec 2009 vs Jan 2010 totals).
-  4. Implausible values: deployments larger than the whole armed forces.
+  1. peacekeeping-tracker v1.0.0's own checks passed (its check 9 confirms the rebuilt UN data
+     matches that release).
+  2. The panel's world totals equal peacekeeping-tracker's published monthly totals, every month.
+  3. Every reimbursement rate used is in peacekeeping-tracker's rate table, with its resolution.
+  4. Months covered and years with fewer than 12 months.
+  5. Implausible values: more personnel deployed than the country's whole armed forces.
 
 Usage:  python code/02_check_panel.py
-Output: data/clean/check_report.md
+Output: data/check_report.md
 """
 
 from pathlib import Path
@@ -16,59 +17,51 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
-RAW = ROOT / "data" / "raw"
-CLEAN = ROOT / "data" / "clean"
+EXT = ROOT / "external" / "peacekeeping-tracker"
+BUILD = ROOT / "data" / "build"
 
 
 def main():
-    p = pd.read_csv(CLEAN / "panel_country_year.csv")
-    m = pd.read_csv(CLEAN / "un_personnel_monthly.csv")
-    out = ["# Check report", ""]
+    out, problems = ["# Check report", ""], 0
+    m = pd.read_csv(BUILD / "panel_country_month.csv")
+    y = pd.read_csv(BUILD / "panel_country_year.csv")
 
-    # 1. Compare with the UN annual dataset. The UN averages each personnel category only
-    # over the months in which that category was reported, so we rebuild that figure from
-    # our monthly file and compare like with like.
-    a = pd.read_csv(RAW / "un_DataCommons-UCHISTORICAL.csv.gz")
-    a["n"] = a.Male.fillna(0) + a.Female.fillna(0)
-    a = a.groupby(["ISOCode3", "Year"]).n.sum().reset_index().rename(columns={"ISOCode3": "iso3", "Year": "year", "n": "un_annual"})
-    mm = m.assign(year=m.month.str[:4].astype(int))
-    mm = mm[mm.year >= 2010]
-    cats = ["troops", "formed_police_units", "individual_police", "staff_officers", "experts_on_mission"]
-    long = mm.melt(id_vars=["iso3", "year", "month"], value_vars=cats)
-    long = long[long.value > 0]
-    un_method = long.groupby(["iso3", "year", "variable"]).value.mean().groupby(["iso3", "year"]).sum().reset_index(name="ours_un_method")
-    j = un_method.merge(a, on=["iso3", "year"], how="inner")
-    close = (j.ours_un_method - j.un_annual).abs() <= j.un_annual.abs() * 0.01 + 1
-    out.append(f"1. Our monthly data, averaged the UN's way, vs the UN's own annual figures (2010 onward): "
-               f"{close.sum():,} of {len(j):,} country-years agree within 1% (or 1 person).")
-    out.append("   Note: the UN's annual figure averages each category only over months in which it was reported, "
-               "which overstates countries that left or joined a mission during the year. This dataset instead "
-               "averages over all months of the year, counting months with no contribution as zero.")
-    p2 = p[p.year >= 2010].merge(a, on=["iso3", "year"], how="inner")
-    ex = p2.assign(gap=lambda x: x.un_annual - x.avg_total_uniformed).sort_values("gap", ascending=False).head(3)
-    out.append("   Largest differences between the two methods: " + "; ".join(
-        f"{r.country} {r.year} (ours {r.avg_total_uniformed:,.0f}, UN {r.un_annual:,.0f}, contributing {r.months_contributing} of 12 months)"
-        for _, r in ex.iterrows()))
+    rep = (EXT / "data" / "check_report.md").read_text(encoding="utf-8")
+    ok = "All checks passed." in rep
+    problems += not ok
+    out.append(f"1. peacekeeping-tracker v1.0.0 checks on the rebuilt UN data: **{'all passed' if ok else 'FAILED'}** "
+               "(see external/peacekeeping-tracker/data/check_report.md).")
 
-    # 2. Months per year
+    pub = pd.read_csv(EXT / "tables" / "monthly_totals.csv").set_index("month")["total"]
+    ours = m.groupby("month").total_uniformed.sum()
+    j = pd.concat([ours, pub], axis=1, keys=["ours", "published"]).fillna(-1)
+    bad = j[(j.ours - j.published).abs() > 0.5]
+    problems += len(bad) > 0
+    out.append(f"2. World totals vs peacekeeping-tracker's tables/monthly_totals.csv: {len(j) - len(bad)} of {len(j)} months equal.")
+    for mo, r in bad.head(5).iterrows():
+        out.append(f"   - {mo}: ours {r.ours:,.0f}, published {r.published:,.0f}")
+
+    rates = pd.read_csv(EXT / "data" / "reference" / "reimbursement_rates.csv")
+    used = sorted(m.rate_usd.dropna().unique())
+    missing = [x for x in used if x not in set(rates.usd_per_person_per_month)]
+    problems += len(missing) > 0
+    out.append(f"3. Reimbursement rates used: {', '.join(f'${x:,.2f}' for x in used)}; all in the rate table: "
+               f"**{'yes' if not missing else 'NO'}**. Resolutions: {', '.join(sorted(rates.resolution.unique()))}.")
+
     mm = m.assign(year=m.month.str[:4].astype(int)).groupby("year").month.nunique()
     short = mm[mm < 12]
-    out.append(f"\n2. Years with fewer than 12 months of data: " +
-               (", ".join(f"{y} ({n} months)" for y, n in short.items()) or "none"))
+    out.append(f"4. Months covered: {m.month.min()} to {m.month.max()} ({m.month.nunique()} months). "
+               "Years with fewer than 12 months: " + ", ".join(f"{yr} ({n})" for yr, n in short.items()) +
+               ". Yearly averages for these years cover only the months available, and no reimbursement is estimated for them.")
 
-    # 3. Join between datasets
-    tot = m.groupby("month").total_uniformed.sum()
-    out.append(f"\n3. World total uniformed personnel: Dec 2009 = {tot.get('2009-12', float('nan')):,.0f}, "
-               f"Jan 2010 = {tot.get('2010-01', float('nan')):,.0f}.")
-
-    # 4. Implausible values
-    big = p[p.contingent_pct_of_armed_forces > 100]
-    out.append(f"\n4. Country-years where deployed contingents exceed the whole armed forces: {len(big)}")
+    big = y[y.contingent_pct_of_armed_forces > 100]
+    out.append(f"5. Country-years with more personnel deployed than the whole armed forces: {len(big)}")
     for _, r in big.head(10).iterrows():
-        out.append(f"   - {r.country} {r.year}: {r.avg_contingent:,.0f} deployed vs {r.armed_forces_personnel:,.0f} armed forces")
+        out.append(f"   - {r.country} {r.year}: {r.avg_contingent:,.0f} deployed vs {r.armed_forces_personnel:,.0f}")
 
+    out.append("\nResult: " + ("all checks passed." if problems == 0 else f"{problems} check(s) failed."))
     text = "\n".join(out) + "\n"
-    (CLEAN / "check_report.md").write_text(text)
+    (ROOT / "data" / "check_report.md").write_text(text, encoding="utf-8")
     print(text)
 
 

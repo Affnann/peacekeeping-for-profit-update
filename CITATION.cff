@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this data or code, please cite it as below."
+message: "If you use this code or these tables, please cite it as below."
 title: "peacekeeping-for-profit-update: UN peacekeeping contributions, military capacity and UN reimbursements by country, 1990-2026"
 authors:
   - family-names: "Azom"
@@ -27,3 +27,15 @@ references:
     end: 741
     year: 2018
     doi: "10.1177/0022343318775784"
+  - type: software
+    authors:
+      - family-names: "Azom"
+        given-names: "Kazi Affnann"
+        orcid: "https://orcid.org/0009-0001-5998-7642"
+    title: "peacekeeping-tracker: monthly UN uniformed personnel contributions by country, 1990-2026"
+    version: "v1.0.0"
+    year: 2026
+    publisher:
+      name: "Zenodo"
+    doi: "10.5281/zenodo.23752307"
+    repository-code: "https://github.com/Affnann/peacekeeping-tracker"
