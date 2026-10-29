@@ -2,7 +2,28 @@
 
 Do poorer countries send soldiers to UN peacekeeping missions to earn money? This project builds the data needed to test that question with recent figures, following the argument of Coleman and Nyblade (2018).
 
-**Status:** the data and indicators are complete and checked. Applying the authors' exact test is the next step and will be added once their criteria are confirmed from the paper itself.
+## Main result
+
+Coleman and Nyblade's first condition says profit is a plausible motive only where a deployment's UN payments are large relative to the country's military spending and armed forces. Applied to the 20 largest military contributors every December from 2015 to 2025:
+
+- In **December 2015**, the top contributors whose UN payments came to **10% or more** of their military spending supplied **30.7%** of all UN military peacekeepers. Top contributors for whom the payments were **below 1%** supplied **21.8%**.
+- By **December 2025** the two had swapped places: **24.0%** and **34.5%**.
+- Across **all** contributors, the number of countries whose payments reached 10% of military spending fell from **14 in 2015 to 4 in 2025**: Rwanda, Nepal, Ghana and Malawi.
+
+So the group for which "peacekeeping for profit" is even plausible was limited in 2015, as the authors argue, and has become smaller since. The condition says when profit is *possible*; it does not show that these countries contribute *for* profit.
+
+![Share of UN military peacekeepers by group](figures/condition1_shares_by_december.png)
+
+### How condition 1 is measured
+
+For each December, for every contributing country:
+
+- **Military personnel** = troops + staff officers + experts on mission deployed that month.
+- **Annual payment** = military personnel x 12 x the UN standard monthly rate in force that December.
+- **Payment share** = annual payment as a percent of the **previous year's** military expenditure (World Bank, based on SIPRI).
+- **Deployment share** = military personnel as a percent of the **same year's** armed forces (World Bank, based on IISS; available only to 2020).
+
+The article gives no numeric cut-off for "very significant". This project uses **10%** as its reading and also reports **5%** and **20%** in the summary table, so the result can be checked under other cut-offs. **Condition 2**, an exceptional ability to profit through cheap equipment or low deployment allowances, depends on national policies that public data does not show, so it is not tested here.
 
 ![Estimated UN reimbursements as a share of military spending](figures/reimbursement_share_of_military_spending_2019.png)
 
@@ -30,6 +51,8 @@ The UN's terms of use allow its data to be downloaded for personal, non-commerci
 
 | File | What it holds |
 |---|---|
+| [`tables/condition1_summary_by_december.csv`](tables/condition1_summary_by_december.csv) | Condition 1 by December, 2015-2025: how many of the top 20 contributors are at or above 5%, 10% and 20%, or below 1%, and the share of all UN military personnel each group supplies; plus every country at or above 10% |
+| [`tables/condition1_top20_by_december.csv`](tables/condition1_top20_by_december.csv) | The 20 largest military contributors each December, 2015-2025, with their payments, military spending, armed forces and both shares |
 | [`tables/reimbursement_share_summary_by_year.csv`](tables/reimbursement_share_summary_by_year.csv) | By year, 2015-2025: total estimated reimbursement owed, and how many countries' payments exceed 5%, 10% and 25% of their military spending |
 | [`tables/reimbursement_share_top20_2019.csv`](tables/reimbursement_share_top20_2019.csv) | The 20 countries with the highest estimated payments relative to military spending in 2019 |
 | [`tables/reimbursement_share_top20_2025.csv`](tables/reimbursement_share_top20_2025.csv) | The same for 2025 |
@@ -58,6 +81,8 @@ The UN's terms of use allow its data to be downloaded for personal, non-commerci
 - **Before May 2017 the UN counted staff officers inside troops**, so contingents and reimbursements for those years are slightly overstated.
 - **Yearly averages count months with no contribution as zero.** The UN's own annual statistics average each category only over the months it was reported, which overstates countries that joined or left a mission during the year.
 - 1990 and 2026 are partial years (2 and 7 months).
+- **Condition 1 counts all military personnel**, including staff officers and military experts, who are not paid through the standard troop rate. This follows the article's own approach, and slightly overstates the payment share.
+- **Military spending figures are revised over time**, so shares for earlier years can differ from those printed in the article.
 
 ## How the numbers were checked
 
@@ -67,6 +92,7 @@ Run by [`code/02_check_panel.py`](code/02_check_panel.py); results in [`data/che
 2. The panel's world totals equal peacekeeping-tracker's published monthly totals in all 429 months.
 3. Every reimbursement rate used comes from peacekeeping-tracker's rate table, which names the General Assembly resolution and paragraph that set it.
 4. Partial years are flagged, and impossible values (more personnel deployed than the whole armed forces) are screened.
+5. The condition 1 measures follow fixed rules, applied the same way to every year, so a change in the result comes from the data, not the method.
 
 ## Reproduce it
 
@@ -78,6 +104,7 @@ python code/00_get_un_data.py      # clones peacekeeping-tracker v1.0.0, downloa
 python code/01_build_panel.py
 python code/02_check_panel.py
 python code/03_tables_figures.py
+python code/04_condition1.py
 ```
 
 ## Sources and license

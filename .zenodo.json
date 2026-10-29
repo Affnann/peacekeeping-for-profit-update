@@ -1,0 +1,14 @@
+{
+  "title": "peacekeeping-for-profit-update: UN peacekeeping contributions, military capacity and UN reimbursements by country, 1990-2026",
+  "upload_type": "software",
+  "description": "<p>Applies the first condition of Coleman and Nyblade (2018), 'Peacekeeping for profit? The scope and limits of mercenary UN peacekeeping' (Journal of Peace Research 55(6): 726-741, doi:10.1177/0022343318775784), to the 20 largest UN military contributors every December from 2015 to 2025: estimated UN troop-cost payments relative to military spending, and deployments relative to armed forces. Builds on peacekeeping-tracker v1.0.0 (doi:10.5281/zenodo.23752307) for the UN personnel data, which is rebuilt by the code rather than redistributed, and on World Bank indicators. Includes the code, checks, summary tables and figures.</p><p>Code: MIT. World Bank data: CC BY 4.0. UN data are subject to the UN's terms of use and are not included.</p>",
+  "creators": [
+    {"name": "Azom, Kazi Affnann", "orcid": "0009-0001-5998-7642"}
+  ],
+  "license": "mit-license",
+  "keywords": ["UN peacekeeping", "troop contributions", "military expenditure", "reimbursement", "peacekeeping for profit"],
+  "related_identifiers": [
+    {"identifier": "10.5281/zenodo.23752307", "relation": "isDerivedFrom", "scheme": "doi"},
+    {"identifier": "10.1177/0022343318775784", "relation": "references", "scheme": "doi"}
+  ]
+}

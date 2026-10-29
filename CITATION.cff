@@ -6,6 +6,8 @@ authors:
     given-names: "Kazi Affnann"
     orcid: "https://orcid.org/0009-0001-5998-7642"
 repository-code: "https://github.com/Affnann/peacekeeping-for-profit-update"
+version: "1.0.0"
+date-released: "2026-10-29"
 license: MIT
 keywords:
   - UN peacekeeping
