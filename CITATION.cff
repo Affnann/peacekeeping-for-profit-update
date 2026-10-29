@@ -1,9 +1,29 @@
 cff-version: 1.2.0
 message: "If you use this data or code, please cite it as below."
-title: "peacekeeping-for-profit-update"
+title: "peacekeeping-for-profit-update: UN peacekeeping contributions, military capacity and UN reimbursements by country, 1990-2026"
 authors:
   - family-names: "Azom"
     given-names: "Kazi Affnann"
     orcid: "https://orcid.org/0009-0001-5998-7642"
 repository-code: "https://github.com/Affnann/peacekeeping-for-profit-update"
 license: MIT
+keywords:
+  - UN peacekeeping
+  - troop contributions
+  - military expenditure
+  - reimbursement
+references:
+  - type: article
+    authors:
+      - family-names: "Coleman"
+        given-names: "Katharina P."
+      - family-names: "Nyblade"
+        given-names: "Benjamin"
+    title: "Peacekeeping for profit? The scope and limits of 'mercenary' UN peacekeeping"
+    journal: "Journal of Peace Research"
+    volume: 55
+    issue: 6
+    start: 726
+    end: 741
+    year: 2018
+    doi: "10.1177/0022343318775784"
