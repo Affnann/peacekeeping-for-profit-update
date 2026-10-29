@@ -1,5 +1,7 @@
 # peacekeeping-for-profit-update
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23768249.svg)](https://doi.org/10.5281/zenodo.23768249)
+
 Do poorer countries send soldiers to UN peacekeeping missions to earn money? This project builds the data needed to test that question with recent figures, following the argument of Coleman and Nyblade (2018).
 
 ## Main result
@@ -113,4 +115,9 @@ Sources are in [`data/README.md`](data/README.md). Code: MIT (see [`LICENSE`](LI
 
 ## Cite
 
-See [`CITATION.cff`](CITATION.cff).
+Azom, Kazi Affnann (2026). *peacekeeping-for-profit-update: UN peacekeeping contributions, military capacity and UN reimbursements by country, 1990-2026* (Version v1.0.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.23768250
+
+- This version (v1.0.0): [10.5281/zenodo.23768250](https://doi.org/10.5281/zenodo.23768250)
+- All versions (always points to the latest): [10.5281/zenodo.23768249](https://doi.org/10.5281/zenodo.23768249)
+
+Please also cite the UN personnel data source, peacekeeping-tracker v1.0.0 (https://doi.org/10.5281/zenodo.23752307), and Coleman and Nyblade (2018). See [`CITATION.cff`](CITATION.cff).
