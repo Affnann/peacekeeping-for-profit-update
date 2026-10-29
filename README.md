@@ -10,7 +10,7 @@ Do poorer countries send soldiers to UN peacekeeping missions to earn money? Thi
 
 The UN does not have its own army. Countries lend it soldiers and police, and the UN pays those governments a fixed amount per soldier per month: US$1,448 from July 2022, rising to US$1,474.68 in July 2026. For a rich country this is small, but for a poor country with a small military budget it can be a large source of money. That has led to a popular claim that some countries send peacekeepers mainly for profit.
 
-Coleman and Nyblade (2018) argue that this claim is overstated: profit can plausibly explain contributions only when a country's deployment is large compared with its armed forces and military spending, and only for a limited group of countries. This repository brings together the data to check that argument with figures up to 2026, building on the UN troop data in peacekeeping-tracker: how many personnel each country sent every month since 1990, the size of its armed forces, its military spending, and an estimate of what the UN paid it.
+Coleman and Nyblade (2018) argue that this claim is overstated: profit can plausibly explain contributions only when a country's deployment is large compared with its armed forces and military spending, and only for a limited group of countries. This repository brings together the data to check that argument with figures up to 2026, building on the UN troop data in peacekeeping-tracker: how many personnel each country sent every month since 1990, the size of its armed forces, its military spending, and an estimate of what the UN owed it.
 
 It can be used to see which countries depend most on UN payments, how that changed as missions closed, and to test claims about "peacekeeping for profit" with official numbers.
 
