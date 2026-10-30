@@ -113,6 +113,10 @@ python code/04_condition1.py
 
 Sources are in [`data/README.md`](data/README.md). Code: MIT (see [`LICENSE`](LICENSE)). The summary tables and charts are made from the UN's figures; please credit this project, peacekeeping-tracker and the UN. The World Bank data: CC BY 4.0.
 
+## Used in
+
+Azom, Kazi Affnann (2026). "The 2025–26 UN Peacekeeping Cuts and the Countries That Supply the Troops: Evidence from Monthly Deployment Data." Preprint. Zenodo. https://doi.org/10.5281/zenodo.23801875 (replication package: https://doi.org/10.5281/zenodo.23801845)
+
 ## Cite
 
 Azom, Kazi Affnann (2026). *peacekeeping-for-profit-update: UN peacekeeping contributions, military capacity and UN reimbursements by country, 1990-2026* (Version v1.0.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.23768250
